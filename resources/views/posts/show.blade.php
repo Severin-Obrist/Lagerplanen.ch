@@ -4,11 +4,20 @@
     <h1>{{$post->title}}</h1>
     <div>
         {!!$post->body!!}
-    </div>
-    <hr>    
+    </div>   
 
     <small>Written on {{$post->created_at}}</small>
 
-    <div class="mt-2"><a href="/posts" class="btn btn-primary">Go back</a></div>
+    <hr>
+
+    <div class="mt-2">
+        <a href="/posts/{{$post->id}}/edit" class="border bg-light btn btn-light">Edit</a>
+        <a href="/posts" class="border bg-light btn btn-light">Go back</a>
     
+    {!!Form::open(['action'=>['PostsController@destroy', $post->id], 'method'=>'POST', 'class'=>'float-right'])!!}
+        {{Form::hidden('_method', 'DELETE')}}
+        {{Form::submit('Delete', ['class'=> 'btn btn-danger mt-1'])}}
+    {!!Form::close()!!}
+
+    </div>
 @endsection
