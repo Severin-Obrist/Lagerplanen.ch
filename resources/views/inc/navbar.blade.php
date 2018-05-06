@@ -31,7 +31,7 @@
                   </ul>
 
                   <!-- Right Side Of Navbar -->
-                  <ul class="navbar-nav ml-auto">
+                  <ul class="navbar-nav m-auto">
                       <!-- Authentication Links -->
                       @guest
                           <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
