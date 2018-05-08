@@ -16,6 +16,7 @@ class PostsController extends Controller
      */
     public function __construct()
     {
+        //Tells the website, that the Post-functions can only be used by a registered user. except the index and show page
         $this->middleware('auth', ['except' => ['index', 'show']]);
     }
 
@@ -26,13 +27,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        //$posts = Post::all();
-        //$post = Post::where('title', 'Post Two')->get();
-        //$posts = DB::select('SELECT * FROM posts'); => normal SQL query
-        
-        //$posts = Post::orderBy('title', 'desc')->take(1)->get();
-        //$posts = Post::orderBy('title', 'desc')->get();
-
+        //Displays all Posts, ordered by time of creation
         $posts = Post::orderBy('created_at', 'desc')->paginate(10);
         return view('posts.index')->with('posts', $posts);
     }
@@ -44,6 +39,7 @@ class PostsController extends Controller
      */
     public function create()
     {
+        //returns the create page
         return view('posts.create');
     }
 
@@ -55,6 +51,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        //Tests if the required fields are filled
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required',
@@ -74,6 +71,7 @@ class PostsController extends Controller
             //upload image
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
         } else{
+            //Sets image to filler
             $fileNameToStore = 'noimage.jpg';
         }
 
@@ -85,6 +83,7 @@ class PostsController extends Controller
         $post->cover_image = $fileNameToStore;
         $post->save();
 
+        //brings the user back to the index page
         return redirect('/posts')->with('success', 'Post created');
     }
 
@@ -96,6 +95,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
+        //shows the Post
         $post =  Post::find($id);
         return view('posts.show')->with('post', $post);
     }
@@ -115,6 +115,7 @@ class PostsController extends Controller
             return redirect('/posts')->with('error','Unauthorized Page');
         }
 
+        //returns the edit-view
         return view('posts.edit')->with('post', $post);
     }
 
@@ -127,6 +128,7 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //Tests if required fields are filled, the image is no longer required
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required'
@@ -147,7 +149,7 @@ class PostsController extends Controller
             $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
         }
 
-        // create post
+        // update post
         $post = Post::find($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
@@ -179,6 +181,7 @@ class PostsController extends Controller
             Storage::delete('public/cover_images/'.$post->cover_image);
         }
 
+        //deletes the post
         $post->delete();
         return redirect('/posts')->with('success', 'Post removed');
     }

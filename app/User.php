@@ -27,6 +27,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    //creates a model relationship with the post-model
     public function posts(){
         return $this->hasMany('App\Post');
     }

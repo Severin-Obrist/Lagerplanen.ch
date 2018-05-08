@@ -20,11 +20,12 @@
     </head>
     <body>
         <div id="app">
-
+            <!-- includes the Navigation Bar in the layout-->
             @include('inc.navbar')
 
             <main class="py-4">
                 <div class="container">
+                    <!-- includes messages and the main content in the layout-->
                     @include('inc.messages')
                     @yield('content')
                 </div>

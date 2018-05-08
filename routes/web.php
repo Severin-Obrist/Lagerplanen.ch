@@ -21,10 +21,13 @@ Route::get('/users/{id}/{name}', function($id, $name){
 });
 */
 
+//Route different parts of the link to different views/pages
 
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
+Route::get('/budget', 'PagesController@budget');
+Route::get('/lager', 'PagesController@lager');
 
 Route::resource('posts', 'PostsController');
 

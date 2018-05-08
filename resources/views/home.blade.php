@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<!-- Dashboard/Home -->
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -15,17 +17,14 @@
                     @endif
 
                     You are logged in! 
-
-                    <div class="mt-2">
-                        <a href="/posts/create" class="btn btn-primary">Create Post</a>
-                    </div>
                     
+                    <!-- Shows all your own posts-->
                     @if(count($posts) > 0)
                         <table class="table table-striped mt-2">
                             <tr>
                                 <th>Title</th>
                                 <th></th>
-                                <th></th>
+                                <th><a href="/posts/create" class="btn btn-primary float-right">Create Post</a></th>
                             </tr>
                             @foreach($posts as $post)
                                 <tr>
