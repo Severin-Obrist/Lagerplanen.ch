@@ -1,10 +1,18 @@
-<!--<li class="nav-item"><a class="nav-link" href="/posts/create">Create Post</a>-->
-  
+<!-- Navigation bar -->
       <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
-          
-              <a class="navbar-brand" href="{{ url('/') }}">
+
+          <div class="container">
+            <!-- redirects guests and registered users to different places -->
+            @guest
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'Laravel') }}
+                </a>
+            @else
+                <a class="navbar-brand" href="{{ url('/home') }}">
                   {{ config('app.name', 'Laravel') }}
-              </a>
+                </a>
+            @endguest
+              
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
               </button>
@@ -26,12 +34,12 @@
                         <a class="nav-link" href="/posts">Blog</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="/posts/create">Create Post</a>
+                        <a class="nav-link" href="/budget">Budget</a>
                     </li>
                   </ul>
 
                   <!-- Right Side Of Navbar -->
-                  <ul class="navbar-nav m-auto">
+                  <ul class="navbar-nav ml-auto">
                       <!-- Authentication Links -->
                       @guest
                           <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
@@ -44,6 +52,7 @@
 
                               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                   <a class="dropdown-item" href="/home">Dashboard</a>
+                                  <a class="dropdown-item" href="/posts/create">Create Post</a>
                                   <a class="dropdown-item" href="{{ route('logout') }}"
                                      onclick="event.preventDefault();
                                                    document.getElementById('logout-form').submit();">
@@ -58,5 +67,5 @@
                       @endguest
                   </ul>
               </div>
-          
+          </div>
       </nav>
