@@ -1,3 +1,4 @@
+<!-- Tests if there are any errors and shows them on the page -->
 @if(count($errors) >0 )
     @foreach($errors->all() as $error)
         <div class="alert alert-warning">

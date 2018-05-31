@@ -26,10 +26,10 @@ Route::get('/users/{id}/{name}', function($id, $name){
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
-Route::get('/budget', 'PagesController@budget');
 Route::get('/lager', 'PagesController@lager');
 
 Route::resource('posts', 'PostsController');
+Route::resource('budget', 'BudgetController');
 
 Auth::routes();
 
