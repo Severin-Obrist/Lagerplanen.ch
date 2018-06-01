@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Post;
+use App\Budget;
 
 class BudgetController extends Controller
 {
@@ -26,8 +26,8 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        $title = 'Budget';
-        return view('budgets.budget')->with('title', $title);
+        $budgets = Budget::orderBy('id', 'desc')->paginate(10);
+        return view('budgets.b_index')->with('budgets', $budgets);
     }
 
     /**
@@ -37,7 +37,7 @@ class BudgetController extends Controller
      */
     public function create()    
     {
-       return view('budgets.budget_create');
+       return view('budgets.b_create');
     }
 
     /**
@@ -48,8 +48,7 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
-        $budget = new Budget;
-        $post->user_id = auth()->user()->id;
+        
     }
 
     /**
@@ -60,7 +59,8 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        
+        $budget = DB::table('budgets')->where('bid', $id);
+        return view('budgets.b_show')->with('budget', $budget);
     }
 
     /**

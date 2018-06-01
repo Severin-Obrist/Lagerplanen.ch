@@ -34,7 +34,7 @@
                         <a class="nav-link" href="/posts">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/budget">Budget</a>
+                        <a class="nav-link" href="/budgets">Budget</a>
                     </li>
                   </ul>
 

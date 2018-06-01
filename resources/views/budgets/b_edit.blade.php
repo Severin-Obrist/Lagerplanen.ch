@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    <p>Create Budgets</p>
+    <p>edit budget</p>
 @endsection

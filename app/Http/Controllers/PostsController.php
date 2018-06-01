@@ -83,10 +83,7 @@ class PostsController extends Controller
         $post->cover_image = $fileNameToStore;
         $post->save();
 
-<<<<<<< HEAD
-=======
         //brings the user back to the index page
->>>>>>> d53c33494b21e560e51ade48925ed6997013dfd5
         return redirect('/posts')->with('success', 'Post created');
     }
 

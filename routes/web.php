@@ -29,7 +29,7 @@ Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
 
 Route::resource('posts', 'PostsController');
-Route::resource('budget', 'BudgetController');
+Route::resource('budgets', 'BudgetController');
 
 Auth::routes();
 

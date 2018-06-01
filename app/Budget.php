@@ -10,6 +10,8 @@ class Budget extends Model
     protected $table = 'budgets';
     //Primary Key
     public $primaryKey = 'id';
+    //Disable Timestamp
+    public $timestamps = false;
 
     //creates a model relationship with the user-model
     public function user(){
