@@ -26,7 +26,7 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        $budgets = Budget::orderBy('id', 'desc')->paginate(10);
+        $budgets = Budget::orderBy('id')->paginate(10);
         return view('budgets.b_index')->with('budgets', $budgets);
     }
 
@@ -59,7 +59,7 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        $budget = DB::table('budgets')->where('bid', $id);
+        $budget = Budget::where('bid', $id);
         return view('budgets.b_show')->with('budget', $budget);
     }
 
