@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Budget;
+use App\Budget_Relations;
 
 class BudgetController extends Controller
 {
@@ -59,7 +60,8 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        $budget = Budget::where('bid', $id);
+        $budget = Budget::orderBy('id')->where('bid', $id);
+        //$budget = Budget::find($id);
         return view('budgets.b_show')->with('budget', $budget);
     }
 
