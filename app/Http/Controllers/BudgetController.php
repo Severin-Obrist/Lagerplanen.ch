@@ -60,7 +60,9 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        $budget = Budget::orderBy('id')->where('bid', $id);
+        $budget = Budget::orderBy('id')
+            ->where('bid', $id)
+            ->get();
         //$budget = Budget::find($id);
         return view('budgets.b_show')->with('budget', $budget);
     }
