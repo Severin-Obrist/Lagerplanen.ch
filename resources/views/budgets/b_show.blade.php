@@ -1,8 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>{{$budget->budgetPosten}}</h1>
-    <div>
-        {{$budget->content}}
-    </div>
+    @if(count($budget) > 0)
+        @foreach($budget as $eintrag)
+            <div>
+                <h3>{{$eintrag->budgetPosten}}</h3>
+                <p>Eintrag: {{$eintrag->content}}</p>
+            </div>
+        @endforeach
+    @endif
 @endsection
