@@ -20,7 +20,7 @@ class Budget_Relations extends Model
     }
 
     //creates a model relationship with the Budget-model
-    public function budget(){
-        return $this->belongsTo('App\Budget');
+    public function budget_content(){
+        return $this->belongsTo('App\Budget_Content');
     }
 }

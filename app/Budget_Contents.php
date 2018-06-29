@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Budget extends Model
+class Budget_Contents extends Model
 {
     //Table Name
-    protected $table = 'budgets';
+    protected $table = 'budget_contents';
     //Primary Key
     public $primaryKey = 'id';
     //Disable Timestamp

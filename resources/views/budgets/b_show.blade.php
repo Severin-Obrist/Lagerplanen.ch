@@ -14,5 +14,7 @@
                 </tr>
             @endforeach
         </table>
+    @else
+        <p>Keine Einträge im Buget</p>
     @endif
 @endsection
