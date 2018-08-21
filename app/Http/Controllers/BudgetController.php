@@ -66,13 +66,18 @@ class BudgetController extends Controller
             ->where('bid', $id)
             ->get();
 
+        $budgetPostenList = Budget_Contents::orderBy('id')
+            ->where('bid', $id)
+            ->groupBy('budgetPosten')
+            ->pluck('budgetPosten');
+
         $budget = DB::table('budget_contents')
             ->select(DB::raw('SUM(content) as content_sum, budgetPosten'))
             ->where('bid', $id)
             ->groupBy('budgetPosten')
             ->get();
         
-        return view('budgets.b_show')->with('budget', $budget)->with('budgetData', $budgetData);
+        return view('budgets.b_show')->with('budget', $budget)->with('budgetData', $budgetData)->with('budgetPostenList', $budgetPostenList);
     }
 
     /**
