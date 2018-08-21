@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Budget_List;
 use App\Budget_Contents;
 use App\Budget_Relations;
+use DB;
 
 class BudgetController extends Controller
 {
@@ -61,11 +62,17 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        $budget = Budget_Contents::orderBy('id')
+        $budgetData = Budget_Contents::orderBy('id')
             ->where('bid', $id)
             ->get();
-        //$budget = Budget::find($id);
-        return view('budgets.b_show')->with('budget', $budget);
+
+        $budget = DB::table('budget_contents')
+            ->select(DB::raw('SUM(content) as content_sum, budgetPosten'))
+            ->where('bid', $id)
+            ->groupBy('budgetPosten')
+            ->get();
+        
+        return view('budgets.b_show')->with('budget', $budget)->with('budgetData', $budgetData);
     }
 
     /**
