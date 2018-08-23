@@ -31,20 +31,24 @@
             {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 <th>
                     <div class="form-group">
-                        {{Form::label('budgetPosten', 'Budgetposten')}}
-                        {{Form::text('neuer Budgetposten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten'])}}
+                        {{Form::label('budgetPostenLabel', 'Budgetposten')}}
+                        {{Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
                     </div>
 
                     <div class="form-group">
-                        {{Form::select('Budgetposten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
+                        {{Form::text('neuBudgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten'])}}
                     </div>
                 </th>
+
                 <th>
                     
                     <div class="form-group">
-                        {{Form::label('ausgaben', 'Ausgaben')}}
-                        {{Form::number('Wert', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
+                        {{Form::label('wertLabel', 'Ausgaben')}}
+                        {{Form::number('wert', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
                     </div>
+                    
+                    {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+                    
                 </th>
             {!! Form::close() !!}
         </table>

@@ -51,6 +51,11 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
+        //Tests if the required fields are filled
+        $this->validate($request, [
+            'budgetPosten' => 'required',
+            'neuBudgetPosten' => 'required',
+        ]);
 
     }
 
