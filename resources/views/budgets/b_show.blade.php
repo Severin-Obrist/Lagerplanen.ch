@@ -43,14 +43,22 @@
                 <th>
                     
                     <div class="form-group">
-                        {{Form::label('wertLabel', 'Ausgaben')}}
-                        {{Form::number('wert', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
+                        {{Form::label('contentLabel', 'Ausgaben')}}
+                        {{Form::number('content', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
                     </div>
                     
-                    {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
-                    
+                    <div class="form-group">
+                        {{Form::label('notesLabel', 'Notizen')}}
+                        {{Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen'])}}
+                    </div>
+                                        
                 </th>
-            {!! Form::close() !!}
+
+                <th>                    
+                    {{Form::hidden('bid', $budgetID[0])}}
+                </th>
         </table>
+        {{Form::submit('submit', ['class' => 'btn btn-primary'])}}
+        {!! Form::close() !!}
     </div>
 @endsection

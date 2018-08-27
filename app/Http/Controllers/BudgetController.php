@@ -54,9 +54,19 @@ class BudgetController extends Controller
         //Tests if the required fields are filled
         $this->validate($request, [
             'budgetPosten' => 'required',
-            'neuBudgetPosten' => 'required',
+            'content' => 'required',
         ]);
 
+        $budget = new Budget_Contents;
+        $budget->pid = auth()->user()->id;
+        $budget->bid = $request->input('bid');
+        $budget->budgetPosten = $request->input('budgetPosten');
+        $budget->content = $request->input('content');
+        $budget->notes = $request->input('notes');
+        $budget->save();
+
+        return redirect('/budgets/{$id}')->with('success', 'Erfolgreich');
+        
     }
 
     /**
@@ -71,6 +81,11 @@ class BudgetController extends Controller
             ->where('bid', $id)
             ->get();
 
+        $budgetID = DB::table('budget_contents')
+            ->select('bid')
+            ->where('bid', $id)
+            ->pluck('bid');
+
         $budgetPostenList = Budget_Contents::orderBy('id')
             ->where('bid', $id)
             ->groupBy('budgetPosten')
@@ -82,7 +97,11 @@ class BudgetController extends Controller
             ->groupBy('budgetPosten')
             ->get();
         
-        return view('budgets.b_show')->with('budget', $budget)->with('budgetData', $budgetData)->with('budgetPostenList', $budgetPostenList);
+        return view('budgets.b_show')
+            ->with('budget', $budget)
+            ->with('budgetData', $budgetData)
+            ->with('budgetPostenList', $budgetPostenList)
+            ->with('budgetID', $budgetID);
     }
 
     /**

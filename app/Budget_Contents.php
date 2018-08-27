@@ -13,8 +13,13 @@ class Budget_Contents extends Model
     //Disable Timestamp
     public $timestamps = false;
 
+    protected $fillable = ['pid', 'bid', 'budgetPosten', 'content', 'notes'];
+
     //creates a model relationship with the user-model
     public function user(){
         return $this->belongsTo('App\User');
+    }
+    public function budget_relations(){
+        return $this->belongsTo('App\Budget_Relations');
     }
 }

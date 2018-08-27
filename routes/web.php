@@ -31,6 +31,7 @@ Route::get('/lager', 'PagesController@lager');
 Route::resource('posts', 'PostsController');
 Route::resource('budgets', 'BudgetController');
 
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
