@@ -27,11 +27,12 @@
     @endif
 
     <div>
+        
         <table class="table table-striped mt-2">
             {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 <th>
                     <div class="form-group">
-                        {{Form::label('budgetPostenLabel', 'Budgetposten')}}
+                        {{Form::label('budgetPosten', 'Budgetposten')}}
                         {{Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
                     </div>
 
@@ -43,12 +44,12 @@
                 <th>
                     
                     <div class="form-group">
-                        {{Form::label('contentLabel', 'Ausgaben')}}
+                        {{Form::label('content', 'Ausgaben')}}
                         {{Form::number('content', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
                     </div>
                     
                     <div class="form-group">
-                        {{Form::label('notesLabel', 'Notizen')}}
+                        {{Form::label('notes', 'Notizen')}}
                         {{Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen'])}}
                     </div>
                                         
@@ -60,5 +61,8 @@
         </table>
         {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
+    
+
+    <form role="form" method="post" action="{{action('BudgetController@store')}}">
     </div>
 @endsection
