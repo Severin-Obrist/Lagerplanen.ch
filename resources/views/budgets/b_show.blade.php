@@ -58,7 +58,7 @@
                     {{Form::hidden('bid', $budgetID[0])}}
                 </th>
         </table>
-        {{Form::submit('submit', ['class' => 'btn btn-primary'])}}
+        {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
         {!! Form::close() !!}
     </div>
 @endsection
