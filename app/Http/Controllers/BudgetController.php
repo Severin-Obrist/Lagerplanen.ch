@@ -51,11 +51,14 @@ class BudgetController extends Controller
      */
     public function store(Request $request)
     {
+        error_log("made it to to 'store' method");
         //Tests if the required fields are filled
         $this->validate($request, [
             'budgetPosten' => 'required',
             'content' => 'required',
         ]);
+
+        error_log("validated the Request");
 
         $budget = new Budget_Contents;
         $budget->pid = auth()->user()->id;
@@ -64,6 +67,8 @@ class BudgetController extends Controller
         $budget->content = $request->input('content');
         $budget->notes = $request->input('notes');
         $budget->save();
+
+        error_log("should have added a new budget collumn");
 
         return redirect('/budgets/{$id}')->with('success', 'Erfolgreich');
         
