@@ -26,43 +26,28 @@
         <p>Keine Einträge im Buget</p>
     @endif
 
-    <div>
-        
-        <table class="table table-striped mt-2">
-            {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
-                <th>
-                    <div class="form-group">
-                        {{Form::label('budgetPosten', 'Budgetposten')}}
-                        {{Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
-                    </div>
+    <div>        
+        {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
 
-                    <div class="form-group">
-                        {{Form::text('neuBudgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten'])}}
-                    </div>
-                </th>
+            <div class="form-group">
+                {{ Form::label('budgetPosten', 'Budgetposten') }}
+                {{ Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
+            </div>
 
-                <th>
+            <div class="form-group">
+                {{ Form::label('content', 'Ausgaben') }}
+                {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
+            </div>
                     
-                    <div class="form-group">
-                        {{Form::label('content', 'Ausgaben')}}
-                        {{Form::number('content', '', ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
-                    </div>
-                    
-                    <div class="form-group">
-                        {{Form::label('notes', 'Notizen')}}
-                        {{Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen'])}}
-                    </div>
-                                        
-                </th>
+            <div class="form-group">
+                {{ Form::label('notes', 'Notizen') }}
+                {{ Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen'])}}
+            </div>
 
-                <th>                    
-                    {{Form::hidden('bid', $budgetID[0])}}
-                </th>
-        </table>
-        {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+            {{ Form::hidden('bid', $budgetID) }} <!-- Gibt die Budget ID mit, indem es die Budget ID von einem der Einträge übernimmt -->
+
+            {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
+            
         {!! Form::close() !!}
-    
-
-    <form role="form" method="post" action="{{action('BudgetController@store')}}">
     </div>
 @endsection
