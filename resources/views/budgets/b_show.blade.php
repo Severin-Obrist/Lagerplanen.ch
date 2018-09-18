@@ -15,7 +15,7 @@
                     <td>
                         @foreach($budgetData as $eintragData)
                             @if($eintragData->budgetPosten == $eintrag->budgetPosten) <!-- überprüft, ob der BudgetPosten des eintragData derselbe ist wie der des zurzeitigen eintrages -->
-                                {{$eintragData->pid}} </br> <!-- wenn ja, dann gibt es die Benutzer ID von EintragData aus -->
+                                {{$eintragData->user->name}} </br> <!-- wenn ja, dann gibt es die Benutzer ID von EintragData aus -->
                             @endif
                         @endforeach
                 </tr>
@@ -31,7 +31,12 @@
 
             <div class="form-group">
                 {{ Form::label('budgetPosten', 'Budgetposten') }}
-                {{ Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}
+                <!--{{ Form::select('budgetPosten', $budgetPostenList, $selected = null, ['class' => 'form-control', 'multiple' => 'multiple']) }}-->
+                <select class="form-control" name="budgetPosten" multiple>
+                    @foreach($budgetPostenList as $key => $bPLEintrag)
+                        <option value="{{ $bPLEintrag }}">{{ $bPLEintrag }} </option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="form-group">

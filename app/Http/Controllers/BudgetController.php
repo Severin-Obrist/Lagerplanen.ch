@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Budget_List;
 use App\Budget_Contents;
 use App\Budget_Relations;
 use DB;
@@ -29,7 +28,10 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        $budgets = Budget_List::orderBy('id')->paginate(10);
+        $budgets = Budget_Relations::orderBy('id')
+            ->where('user_id', auth()->user()->id)
+            ->paginate(10);
+
         return view('budgets.b_index')->with('budgets', $budgets);
     }
 
@@ -40,7 +42,7 @@ class BudgetController extends Controller
      */
     public function create()
     {
-       return view('budgets.b_create');
+        
     }
 
     /**
@@ -59,7 +61,7 @@ class BudgetController extends Controller
         ]);
 
         $budget = new Budget_Contents;
-        $budget->pid = auth()->user()->id;
+        $budget->user_id = auth()->user()->id;
         $budget->bid = $request->input('bid');
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->content = $request->input('content');
