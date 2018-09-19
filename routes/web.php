@@ -31,6 +31,7 @@ Route::get('/lager', 'PagesController@lager');
 Route::resource('posts', 'PostsController');
 Route::resource('budgets', 'BudgetController');
 
+Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
 
 Auth::routes();
 

@@ -73,6 +73,12 @@ class BudgetController extends Controller
         
     }
 
+    public function addBudgetPosten(Request $request){
+        $budget = new Budget_Contents;
+        $budget->budgetiert = $request->input('budgetiert');
+        $budget->budgetPosten = $request->input('budgetPosten');
+    }
+
     /**
      * Display the specified resource.
      *
