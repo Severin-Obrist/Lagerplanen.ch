@@ -28,10 +28,11 @@ Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
 
+Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
+
 Route::resource('posts', 'PostsController');
 Route::resource('budgets', 'BudgetController');
 
-Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
 
 Auth::routes();
 

@@ -66,17 +66,25 @@ class BudgetController extends Controller
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->content = $request->input('content');
         $budget->notes = $request->input('notes');
+        $budget->budgeted = 0;
         $budget->save();
 
-        return redirect('/budgets/{$id}')->with('success', 'Erfolgreich');
+        return redirect('budgets/'.$request->input('bid'))->with('success', 'Erfolgreich');
         
         
     }
 
     public function addBudgetPosten(Request $request){
         $budget = new Budget_Contents;
-        $budget->budgetiert = $request->input('budgetiert');
+        $budget->user_id = auth()->user()->id;
+        $budget->budgeted = $request->input('budgetiert');
         $budget->budgetPosten = $request->input('budgetPosten');
+        $budget->bid = $request->input('bid');
+        $budget->content = 0;
+        $budget->notes = ' ';
+        $budget->save();
+
+        return redirect('budgets/'.$request->input('bid'))->with('success', 'Erfolgreich');
     }
 
     /**
@@ -135,7 +143,11 @@ class BudgetController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        /*
+        $budget = new Budget_Contents;
+        $budget->budgetiert = $request->input('budgetiert');
+        $budget->budgetPosten = $request->input('budgetPosten');
+        */
     }
 
     /**

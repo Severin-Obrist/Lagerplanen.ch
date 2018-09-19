@@ -14,7 +14,7 @@ class AddNotesToBudgetContent extends Migration
     public function up()
     {
         Schema::table('budget_contents', function($table){
-            $table->string('notes');
+            $table->string('notes')->default('');
         });
     }
 

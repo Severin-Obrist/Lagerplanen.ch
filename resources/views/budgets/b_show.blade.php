@@ -4,7 +4,7 @@
     <?php $budgetiert = 0; ?>
 
     @if(count($budget) > 0)
-    {!! Form::open(['action' => 'BudgetController@addBudgetPosten', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+    {!! Form::open(['action' => ['BudgetController@addBudgetPosten'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
         <table class='table table-striped mt-2'>
             <tr>
                 <th>Budgetposten</th>
@@ -52,6 +52,7 @@
                 <td> </td>
                 <td>
                     <div class="form-group">
+                        {{ Form::hidden('bid', $budgetID) }}
                         {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
                     </div>
                 </td>
@@ -79,6 +80,7 @@
 
                 <td> 
                     <div class="form-group">
+                        {{ Form::hidden('bid', $budgetID) }}
                         {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
                     </div>
                 </td>

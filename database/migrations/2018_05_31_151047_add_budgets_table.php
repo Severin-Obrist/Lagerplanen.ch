@@ -18,7 +18,7 @@ class AddBudgetsTable extends Migration
             $table->integer('pid'); //Id of the person who added the entry to the Budget
             $table->integer('bid'); //Id of the Budget that was edited
             $table->string('budgetPosten'); //identifies to which row of the budget the entry was added
-            $table->integer('content'); //the value of the entry
+            $table->integer('content')->default('0'); //the value of the entry, defaults to 0
         });
     }
 
