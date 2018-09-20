@@ -104,12 +104,12 @@
 
             <div class="form-group">
                 {{ Form::label('content', 'Ausgaben') }}
-                {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.'])}}
+                {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.']) }}
             </div>
                     
             <div class="form-group">
                 {{ Form::label('notes', 'Notizen') }}
-                {{ Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen'])}}
+                {{ Form::text('notes', '', ['class' => 'form-control', 'placeholder' => 'Notizen']) }}
             </div>
 
             {{ Form::hidden('bid', $budgetID) }} <!-- Gibt die Budget ID mit, indem es die Budget ID von einem der Einträge übernimmt -->
