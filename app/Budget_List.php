@@ -12,4 +12,8 @@ class Budget_List extends Model
     public $primaryKey = 'id';
     //Disable Timestamp
     public $timestamps = false;
+
+    public function budget_relations(){
+        return $this->hasMany('App\Budget_Relations');
+    }
 }

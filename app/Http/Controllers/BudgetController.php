@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Budget_Contents;
 use App\Budget_Relations;
+use App\Budget_List;
+use App\User;
 use DB;
 
 class BudgetController extends Controller
@@ -42,7 +44,72 @@ class BudgetController extends Controller
      */
     public function create()
     {
+
+    }
+
+    public function leiterSearch(Request $request){
+        $leiterArray = User::orderBy('name')
+            ->where('pfadiname', $request->input('pfadiname'))
+            ->get();
+
+        $budgetID = $request->input('bid');
         
+        return view('budgets.b_addLeiter')
+            ->with('leiterArray', $leiterArray)
+            ->with('budgetID', $budgetID);
+        
+    }
+
+    public function addLeiter(Request $request){
+        $budgetName = Budget_List::where('id', $request->input('budgetID'))
+            ->select('budget_name')
+            ->pluck('budget_name');
+
+        $existingLeiter = Budget_Relations::orderBy('id')
+            ->where('bid', $request->input('budgetID'))
+            ->pluck('user_id')
+            ->toArray();
+        
+        $newLeiter = new Budget_Relations;
+        $newLeiter->bid = $request->input('budgetID');
+        $newLeiter->user_id = $request->input('leiterSelect');
+        $newLeiter->isCreator = 0;
+        $newLeiter->budget_name = $budgetName[0];
+
+        if(!in_array($request->input('leiterSelect'), $existingLeiter)){
+            $newLeiter->save();
+
+            return redirect('budgets/'.$request->input('budgetID'))
+                ->with('success', 'Leiter "'.$newLeiter->user->name.'" erfolgreich hinzugefügt.');
+        } else{
+            return redirect('budgets/'.$request->input('budgetID'))
+                ->with('error', 'Leiter "'.$newLeiter->user->name.'" wurde bereits hinzugefügt.');
+        }
+
+        
+
+    }
+
+    /**
+     * Creates a new budget in budget_list and budget_relations
+     * 
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createBudget(Request $request){
+        $budget_list = new Budget_list;
+        $budget_list->budget_name = $request->input('budgetName');
+        $budget_list->save();
+
+        $budget_relation = new Budget_Relations;
+        $budget_relation->bid = $budget_list->id;
+        $budget_relation->user_id = auth()->user()->id;
+        $budget_relation->isCreator = 0;
+        $budget_relation->budget_name = $budget_list->budget_name;
+        $budget_relation->save();
+
+
+        return redirect('budgets')->with('success', 'Budget "'.$budget_list->budget_name.'" erfolgreich erstellt');
     }
 
     /**
@@ -69,11 +136,17 @@ class BudgetController extends Controller
         $budget->budgeted = 0;
         $budget->save();
 
-        return redirect('budgets/'.$request->input('bid'))->with('success', 'Erfolgreich');
+        return redirect('budgets/'.$budget->bid)->with('success', 'Budgetposten "'.$budget->budgetPosten.'" erfolgreich hinzugefügt');
         
         
     }
 
+    /**
+     * Adds new "Budgetposten" to an existing budget
+     * 
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function addBudgetPosten(Request $request){
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
@@ -84,7 +157,7 @@ class BudgetController extends Controller
         $budget->notes = ' ';
         $budget->save();
 
-        return redirect('budgets/'.$request->input('bid'))->with('success', 'Erfolgreich');
+        return redirect('budgets/'.$budget->bid)->with('success', 'Budgetposten "'.$budget->budgetPosten.'" erfolgreich hinzugefügt');
     }
 
     /**
@@ -95,15 +168,13 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
+        $budgetName = Budget_List::where('id', $id)
+            ->select('budget_name')
+            ->first();
+
         $budgetData = Budget_Contents::orderBy('id')
             ->where('bid', $id)
             ->get();
-
-        $budgetID = DB::table('budget_contents')
-            ->select('bid')
-            ->where('bid', $id)
-            ->pluck('bid')
-            ->first();
 
         $budgetPostenList = Budget_Contents::orderBy('id')
             ->where('bid', $id)
@@ -115,12 +186,22 @@ class BudgetController extends Controller
             ->where('bid', $id)
             ->groupBy('budgetPosten')
             ->get();
+
+        $allowedUsers = Budget_Relations::orderBy('id')
+            ->where('bid', $id)
+            ->pluck('user_id')
+            ->toArray();
+
+        $leiterArray = array();
         
         return view('budgets.b_show')
             ->with('budget', $budget)
             ->with('budgetData', $budgetData)
             ->with('budgetPostenList', $budgetPostenList)
-            ->with('budgetID', $budgetID);
+            ->with('budgetID', $id)
+            ->with('allowed', $allowedUsers)
+            ->with('budgetName', $budgetName)
+            ->with('leiterArray', $leiterArray);
     }
 
     /**
@@ -143,11 +224,7 @@ class BudgetController extends Controller
      */
     public function update(Request $request, $id)
     {
-        /*
-        $budget = new Budget_Contents;
-        $budget->budgetiert = $request->input('budgetiert');
-        $budget->budgetPosten = $request->input('budgetPosten');
-        */
+        
     }
 
     /**

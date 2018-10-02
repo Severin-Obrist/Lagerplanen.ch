@@ -16,35 +16,24 @@
                         </div>
                     @endif
 
-                    You are logged in! 
+                    Du bist angemeldet!
                     
                     <!-- Shows all your own posts-->
-                    @if(count($posts) > 0)
+                    @if(count($budgets) > 0)
                         <table class="table table-striped mt-2">
-                            <tr>
-                                <th>Title</th>
-                                <th></th>
-                                <th><a href="/posts/create" class="btn btn-primary float-right">Create Post</a></th>
-                            </tr>
-                            @foreach($posts as $post)
+                            @foreach($budgets as $budget)
                                 <tr>
                                     <td>
-                                        {{$post->title}}
+                                        <b>{{$budget->budget_name}}</b>
                                     </td>
                                     <td>
-                                        <a href="/posts/{{$post->id}}/edit" class="btn btn-outline-primary">Edit</a>
-                                    </td>
-                                    <td>
-                                        {!!Form::open(['action'=>['PostsController@destroy', $post->id], 'method'=>'POST', 'class'=>'float-right'])!!}
-                                            {{Form::hidden('_method', 'DELETE')}}
-                                            {{Form::submit('Delete', ['class'=> 'btn btn-danger mt-1'])}}
-                                        {!!Form::close()!!}
+                                        <a href="/budgets/{{$budget->bid}}" class="btn btn-outline-primary">öffnen</a>
                                     </td>
                                 </tr>
                             @endforeach
                         </table>
                     @else
-                        <p class="mt-2">You have no posts!</p>
+                        <p class="mt-2">Keine Budgets vorhanden</p>
                     @endif
 
                 </div>

@@ -1,7 +1,8 @@
 @extends('layouts.app') 
 
 @section('content')
-    <h1>This is the budget page</h1> 
+    <h1>Alle deine Budgets</h1>
+
     @if(count($budgets) > 0)
         @foreach($budgets as $budget)
             <div>
@@ -9,4 +10,17 @@
             </div>
         @endforeach
     @endif
+    
+    {!! Form::open(['action' => 'BudgetController@createBudget', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+        <div class="form-group">
+            <table class="table mt-2">
+                <th>
+                    {{ Form::text('budgetName', '', ['class' => 'form-control', 'placeholder' => 'Neues Budget']) }}
+                </th>
+                <th>
+                    {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
+                </th>
+            </table>
+        </div>
+    {!! Form::close() !!}
 @endsection

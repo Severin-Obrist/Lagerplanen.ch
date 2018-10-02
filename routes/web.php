@@ -29,6 +29,9 @@ Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
 
 Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
+Route::post('createBudget', 'BudgetController@createBudget');
+Route::post('leiterSearch', 'BudgetController@leiterSearch');
+Route::post('addLeiter', 'BudgetController@addLeiter');
 
 Route::resource('posts', 'PostsController');
 Route::resource('budgets', 'BudgetController');

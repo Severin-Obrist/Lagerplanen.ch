@@ -23,4 +23,8 @@ class Budget_Relations extends Model
     public function budget_content(){
         return $this->belongsTo('App\Budget_Content');
     }
+
+    public function budget_list(){
+        return $this->belongsTo('App\Budget_List');
+    }
 }
