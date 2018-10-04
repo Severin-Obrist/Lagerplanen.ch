@@ -15,7 +15,7 @@ class PagesController extends Controller
     }
 
     public function about(){
-        $title = 'about us';
+        $title = 'Über uns';
         return view('pages.about')->with('title', $title);
     }
 

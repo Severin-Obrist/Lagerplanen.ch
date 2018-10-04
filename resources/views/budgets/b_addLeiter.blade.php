@@ -19,5 +19,9 @@
             {{ Form::submit('Hinzufügen', ['class' => 'btn btn-primary']) }}       
 
         {!! Form::close() !!} 
+    @else
+        <p> Keine Leiter mit diesem Pfadinamen gefunden, stelle sicher, dass du den Namen richtig geschrieben hast. </br>
+            Falls die Person, nach der du suchst noch keinen Pfadinamen hat, suche nach "kein Pfadiname" </p>
+        <a class="btn btn-primary" href="/budgets/{{ $budgetID }}">Zurück</a>
     @endif
 @endsection

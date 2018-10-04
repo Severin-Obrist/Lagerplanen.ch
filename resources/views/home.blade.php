@@ -18,7 +18,7 @@
 
                     Du bist angemeldet!
                     
-                    <!-- Shows all your own posts-->
+                    <!-- Shows all your own budgets-->
                     @if(count($budgets) > 0)
                         <table class="table table-striped mt-2">
                             @foreach($budgets as $budget)
