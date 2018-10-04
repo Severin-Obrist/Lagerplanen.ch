@@ -105,7 +105,9 @@
                                         </div>
 
                                         <div class="modal-body">
-                                            <a href="/deleteBudgetPosten/{{ $budgetID }}/{{ $eintrag->budgetPosten }}"><span class="btn btn-danger">Löschen</span></a>
+                                            <div class="text-center">
+                                                <a href="/deleteBudgetPosten/{{ $budgetID }}/{{ $eintrag->budgetPosten }}"><span class="btn btn-danger">Löschen</span></a>
+                                            </div>
                                         </div>
     
                                         <div class="modal-footer">
