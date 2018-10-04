@@ -23,30 +23,6 @@
             {!! Form::close() !!}
 
             
-            
-            <!--
-            <button type="button" data-toggle="modal" data-target="#myModal">Open Modal</button>
-            
-            <div class="modal fade show" id="myModal" role="dialog">
-                <div class="modal-dialog">
-                
-                    
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            Leiter hinzufügen
-                        </div>
-
-                        <div class="modal-body">
-                            test
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        -->
             {!! Form::open(['action' => ['BudgetController@addBudgetPosten'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
             
             @if(count($budget) > 0)
@@ -56,6 +32,7 @@
                         <th>Ausgaben</th>
                         <th>Budgetiert</th>
                         <th>Noch verfügbar</th> 
+                        <th>Infos</th>
                         <!-- <th>BenutzerID</th> -->
                     </tr>
                     @foreach($budget as $key => $eintrag) <!-- iteriert durch die verschiedenen budgetposten in einem budget -->
@@ -72,6 +49,74 @@
                                 @endforeach
                             </td>
                             <td> <?php echo $budgetiert-$eintrag->content_sum; ?> Fr.</td>
+
+                            <td>
+                            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#budgetModal{{ $eintrag->budgetPosten }}">Mehr</button>
+            
+                            <div class="modal fade show" id="budgetModal{{ $eintrag->budgetPosten }}" role="dialog">
+                                <div class="modal-dialog">
+                                
+                                    
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            Infos
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <table class='table table-striped mt-2'>
+                                                <tr>
+                                                    <th>Benutzer</th>
+                                                    <th>Ausgaben</th>
+                                                    <th>Notizen</th>
+                                                </tr>
+                                                @foreach($budgetData as $eintragData)
+                                                    <tr>
+                                                        @if($eintragData->budgetPosten == $eintrag->budgetPosten)  <!--überprüft, ob der BudgetPosten des eintragData derselbe ist wie der des zurzeitigen eintrages -->
+                                                            <td>                                                   <!--wenn ja, dann gibt es den Namen des Benutzers von EintragData aus -->
+                                                                @if($eintragData->user->pfadiname != "kein pfadiname")
+                                                                    {{ $eintragData->user->pfadiname }}
+                                                                @else
+                                                                    {{ $eintragData->user->name }}
+                                                                @endif
+                                                            </td>   
+                                                            <td>{{ $eintragData->content }}</td> 
+                                                            <td>{{ $eintragData->notes }}</td> 
+                                                        @endif
+                                                    </tr>
+                                                @endforeach
+                                            </table>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-outline-danger" type="button" data-toggle="modal" data-target="#deleteModal{{ $eintrag->budgetPosten }}">Löschen</button>
+                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Schliessen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="modal fade show" id="deleteModal{{ $eintrag->budgetPosten }}" role="dialog">
+                                <div class="modal-dialog">
+                                    
+                                        
+                                    <div class="modal-content">
+                                        <div class="modal-header modal-title">
+                                            <h3> Budgetposten {{ $eintrag->budgetPosten }} wirklich löschen? </h3>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <a href="/deleteBudgetPosten/{{ $budgetID }}/{{ $eintrag->budgetPosten }}"><span class="btn btn-danger">Löschen</span></a>
+                                        </div>
+    
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Abbrechen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </td>
+
                             <!--
                             <td>
                                 @foreach($budgetData as $eintragData)
@@ -94,7 +139,7 @@
                             <div class="form-group">
                                 {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert'])}} </td>
                             </div>
-                        <td colspan="2">
+                        <td colspan="3">
                             <div class="form-group">
                                 {{ Form::hidden('bid', $budgetID) }}
                                 {{ Form::submit('Budgetposten hinzufügen', ['class' => 'btn btn-primary']) }}
@@ -120,7 +165,7 @@
                             </div>
                         </td>
 
-                        <td colspan="2"> 
+                        <td colspan="3"> 
                             <div class="form-group">
                                 {{ Form::hidden('bid', $budgetID) }}
                                 {{ Form::submit('Budgetposten hinzufügen', ['class' => 'btn btn-primary']) }}

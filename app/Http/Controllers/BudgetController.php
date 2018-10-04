@@ -121,11 +121,17 @@ class BudgetController extends Controller
     public function store(Request $request)
     {
         //Tests if the required fields are filled
-        $this->validate($request, [
+        $this->validate($request, 
+        [
             'budgetPosten' => 'required',
             'content' => 'required',
             'bid' => 'required'
-        ]);
+        ],
+        [
+            'budgetPosten.required' => "Budgetposten muss ausgewählt sein",
+            'content.required' => "Ausgaben müssen ausgefüllt sein"
+        ]
+        );
 
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
@@ -148,16 +154,40 @@ class BudgetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function addBudgetPosten(Request $request){
+        //Tests if the required fields are filled
+        $this->validate($request, 
+        [
+            'budgetPosten' => 'required',
+            'budgetiert' => 'required',
+            'bid' => 'required'
+        ],
+        [
+            'budgetiert.required' => "Das Feld 'Budgetiert' muss ausgefüllt sein",
+            'budgetPosten.required' => "Das Feld 'neuer Budgetposten' muss ausgefüllt sein"
+        ]
+        );
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
         $budget->budgeted = $request->input('budgetiert');
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->bid = $request->input('bid');
         $budget->content = 0;
-        $budget->notes = ' ';
+        $budget->notes = 'Budgetposten erstellt';
         $budget->save();
 
         return redirect('budgets/'.$budget->bid)->with('success', 'Budgetposten "'.$budget->budgetPosten.'" erfolgreich hinzugefügt');
+    }
+
+    public function deleteBudgetPosten($id, $budgetPosten){
+        $toDelete = Budget_Contents::where('bid', $id)
+            ->where('budgetPosten', $budgetPosten)
+            ->get();
+        
+        foreach($toDelete as $deleteItem){
+            $deleteItem->delete();
+        }
+
+        return redirect('budgets/'.$id)->with('success', 'Budgetposten "'.$budgetPosten.'" erfolgreich gelöscht');
     }
 
     /**
@@ -191,8 +221,6 @@ class BudgetController extends Controller
             ->where('bid', $id)
             ->pluck('user_id')
             ->toArray();
-
-        $leiterArray = array();
         
         return view('budgets.b_show')
             ->with('budget', $budget)
@@ -200,8 +228,7 @@ class BudgetController extends Controller
             ->with('budgetPostenList', $budgetPostenList)
             ->with('budgetID', $id)
             ->with('allowed', $allowedUsers)
-            ->with('budgetName', $budgetName)
-            ->with('leiterArray', $leiterArray);
+            ->with('budgetName', $budgetName);
     }
 
     /**

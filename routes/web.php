@@ -27,6 +27,7 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
+Route::get('/deleteBudgetPosten/{id}/{budgetPosten}', 'BudgetController@deleteBudgetPosten');
 
 Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
 Route::post('createBudget', 'BudgetController@createBudget');
