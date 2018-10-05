@@ -8,7 +8,7 @@
 
             <h1>{{ $budgetName->budget_name }}</h1>
             <hr>
-
+            <div class="form-group">
             {!! Form::open(['action' => ['BudgetController@leiterSearch'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 <div>
                     {{ Form::label('pfadiname', 'Leiter hinzufügen') }}
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             {!! Form::close() !!}
-
+            </div>
             
             {!! Form::open(['action' => ['BudgetController@addBudgetPosten'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
             
@@ -132,48 +132,52 @@
                     @endforeach
 
                     <tr>
-                        <td> 
+                        <td colspan="3"> 
                             <div class="form-group">
+                                {{ Form::label('budgetPosten', 'Budegtposten') }}
                                 {{ Form::text('budgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten']) }} 
                             </div>
                         </td>
                         <td> 
                             <div class="form-group">
+                                {{ Form::label('budgetiert', 'Budgetiert') }}
                                 {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert'])}} </td>
                             </div>
-                        <td colspan="3">
+                        <td >
                             <div class="form-group">
                                 {{ Form::hidden('bid', $budgetID) }}
-                                {{ Form::submit('Budgetposten hinzufügen', ['class' => 'btn btn-primary']) }}
+                                {{ Form::submit('Bestätigen', ['class' => 'btn btn-primary']) }}
                             </div>
                         </td>
                     </tr>
                         
                 </table>
             @else
-                <p>Keine Einträge im Budget</p>
-
                 <table class='table table-striped mt-2'>
                     <tr>
-                        <td> 
-                            <div class="form-group">
-                                {{ Form::text('budgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten']) }} 
-                            </div>
-                        </td>
+                        <th colspan="5" >Keine Einträge im Budget </th>
+                    </tr>
 
-                        <td> 
-                            <div class="form-group">
-                                {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert'])}}
-                            </div>
-                        </td>
-
-                        <td colspan="3"> 
-                            <div class="form-group">
-                                {{ Form::hidden('bid', $budgetID) }}
-                                {{ Form::submit('Budgetposten hinzufügen', ['class' => 'btn btn-primary']) }}
-                            </div>
-                        </td>
-                    </tr>                
+                        <tr>
+                            <td colspan="3"> 
+                                <div class="form-group">
+                                    {{ Form::label('budgetPosten', 'Budegtposten') }}
+                                    {{ Form::text('budgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten']) }} 
+                                </div>
+                            </td>
+                            <td> 
+                                <div class="form-group">
+                                    {{ Form::label('budgetiert', 'Budgetiert') }}
+                                    {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert'])}} </td>
+                                </div>
+                            <td >
+                                <div class="form-group">
+                                    {{ Form::hidden('bid', $budgetID) }}
+                                    {{ Form::label('submit', 'Hinzufügen') }}</br>
+                                    {{ Form::submit('Bestätigen', ['class' => 'btn btn-primary']) }}
+                                </div>
+                            </td>
+                        </tr>             
                 </table>
             @endif
             {!! Form::close() !!}

@@ -48,6 +48,17 @@ class BudgetController extends Controller
     }
 
     public function leiterSearch(Request $request){
+
+        //Tests if the required fields are filled
+        $this->validate($request, 
+            [
+                'pfadiname' => 'required|string|max:255',
+            ],
+            [
+                'budgetName.required' => "der Pfadiname muss ausgefüllt sein",
+            ]
+            );
+        
         $leiterArray = User::orderBy('name')
             ->where('pfadiname', $request->input('pfadiname'))
             ->get();
@@ -61,6 +72,17 @@ class BudgetController extends Controller
     }
 
     public function addLeiter(Request $request){
+
+        //Tests if the required fields are filled
+        $this->validate($request, 
+            [
+                'leiterSelect' => 'required',
+            ],
+            [
+                'budgetName.required' => "Wähle einen Leiter aus",
+            ]
+            );
+
         $budgetName = Budget_List::where('id', $request->input('budgetID'))
             ->select('budget_name')
             ->pluck('budget_name');
@@ -97,6 +119,17 @@ class BudgetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function createBudget(Request $request){
+
+        //Tests if the required fields are filled
+        $this->validate($request, 
+            [
+                'budgetName' => 'required|string|max:255',
+            ],
+            [
+                'budgetName.required' => "der Budgetname muss ausgefüllt sein",
+            ]
+            );
+
         $budget_list = new Budget_list;
         $budget_list->budget_name = $request->input('budgetName');
         $budget_list->save();
@@ -122,23 +155,25 @@ class BudgetController extends Controller
     {
         //Tests if the required fields are filled
         $this->validate($request, 
-        [
-            'budgetPosten' => 'required',
-            'content' => 'required',
-            'bid' => 'required'
-        ],
-        [
-            'budgetPosten.required' => "Budgetposten muss ausgewählt sein",
-            'content.required' => "Ausgaben müssen ausgefüllt sein"
-        ]
-        );
+            [
+                'budgetPosten' => 'required|string|max:255',
+                'content' => 'required|integer',
+                'bid' => 'required|integer'
+            ],
+            [
+                'budgetPosten.required' => "Budgetposten muss ausgewählt sein",
+                'content.required' => "Ausgaben müssen ausgefüllt sein"
+            ]
+            );
 
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
         $budget->bid = $request->input('bid');
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->content = $request->input('content');
-        $budget->notes = $request->input('notes');
+        if($request->input('notes')){
+            $budget->notes = $request->input('notes');
+        }
         $budget->budgeted = 0;
         $budget->save();
 
@@ -154,18 +189,20 @@ class BudgetController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function addBudgetPosten(Request $request){
+
         //Tests if the required fields are filled
         $this->validate($request, 
-        [
-            'budgetPosten' => 'required',
-            'budgetiert' => 'required',
-            'bid' => 'required'
-        ],
-        [
-            'budgetiert.required' => "Das Feld 'Budgetiert' muss ausgefüllt sein",
-            'budgetPosten.required' => "Das Feld 'neuer Budgetposten' muss ausgefüllt sein"
-        ]
-        );
+            [
+                'budgetPosten' => 'required|string|max:255',
+                'budgetiert' => 'required|integer',
+                'bid' => 'required|integer'
+            ],
+            [
+                'budgetiert.required' => "Das Feld 'Budgetiert' muss ausgefüllt sein",
+                'budgetPosten.required' => "Das Feld 'neuer Budgetposten' muss ausgefüllt sein"
+            ]
+            );
+
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
         $budget->budgeted = $request->input('budgetiert');
