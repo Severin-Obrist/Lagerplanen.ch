@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<!-- Wird nicht gebraucht -->
+
 <!-- Shows the post on its own-->
 
 @section('content')

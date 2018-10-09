@@ -14,12 +14,12 @@ class Budget_Relations extends Model
     //Disable Timestamp
     public $timestamps = false;
 
-    //creates a model relationship with the user-model
+    //Erzeugt eine Beziehung zwischen den Models
+    
     public function user(){
         return $this->belongsTo('App\User');
     }
 
-    //creates a model relationship with the Budget-model
     public function budget_content(){
         return $this->belongsTo('App\Budget_Content');
     }

@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+
+<!-- Wird nicht gebraucht -->
+
 <!-- Lists all existing posts with the coverimage-->
 
 @section('content')

@@ -22,13 +22,14 @@
     </head>
     <body>
         <div id="app">
-            <!-- includes the Navigation Bar in the layout-->
+            <!-- Fügt die Navbar auf der Seite ein -->
             @include('inc.navbar')
 
             <main class="py-4">
                 <div class="container">
-                    <!-- includes messages and the main content in the layout-->
+                    <!-- Fügt Nachrichten in die Seite ein -->
                     @include('inc.messages')
+                    <!-- Fügt die 'content' Sektion in die Seite ein -->
                     @yield('content')
                 </div>
             </main>

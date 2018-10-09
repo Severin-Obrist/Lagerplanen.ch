@@ -1,5 +1,7 @@
 <!doctype html>
 
+<!-- Vorerzeugte Seite von Laravel, wird nicht gebraucht-->
+
 <!-- example page -->
 
 <html lang="{{ app()->getLocale() }}">

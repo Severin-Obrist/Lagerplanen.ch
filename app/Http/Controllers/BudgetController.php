@@ -19,7 +19,7 @@ class BudgetController extends Controller
      */
     public function __construct()
     {
-        //Tells the website, that the Budget-functions can only be used by a registered user
+        //Bewirkt, dass die BudgetController-Funktionen nur von angemeldeten Benutzern aufgerufen werden können
         $this->middleware('auth');
     }
 
@@ -30,15 +30,19 @@ class BudgetController extends Controller
      */
     public function index()
     {
+        //liste aller Budgets, auf die man Zugriff hat
         $budgets = Budget_Relations::orderBy('id')
             ->where('user_id', auth()->user()->id)
             ->paginate(10);
 
+        //zeigt die view b_index an mit der Variable $budgets
         return view('budgets.b_index')->with('budgets', $budgets);
     }
 
     /**
      * Show the form for creating a new resource.
+     * 
+     *  ----- nicht gebraucht
      *
      * @return \Illuminate\Http\Response
      */
@@ -47,9 +51,15 @@ class BudgetController extends Controller
 
     }
 
+    /**
+     * Sucht nach allen Leitern, welche den gesuchten 
+     * Pfadinamen haben und gibt sie an die Seite b_addLeiter weiter
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function leiterSearch(Request $request){
 
-        //Tests if the required fields are filled
+        //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
                 'pfadiname' => 'required|string|max:255',
@@ -71,27 +81,36 @@ class BudgetController extends Controller
         
     }
 
+    /**
+     * fügt einen neuen Leiter der budget_relations Tabelle
+     * hinzu und gibt ihm somit zugriff auf das spezifizierte Budget
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function addLeiter(Request $request){
 
-        //Tests if the required fields are filled
+        //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'leiterSelect' => 'required',
+                'leiterSelect' => 'required', //ist erfordert, muss ein text sein und max 255 Zeichen sein
             ],
             [
-                'budgetName.required' => "Wähle einen Leiter aus",
+                'budgetName.required' => "Wähle einen Leiter aus", //Individuelle Fehlernachricht
             ]
             );
 
+        //Filtert den Budgetnamen des Budgets $id heraus
         $budgetName = Budget_List::where('id', $request->input('budgetID'))
             ->select('budget_name')
             ->pluck('budget_name');
 
+        //Filtert alle Leiter heraus, welche schon Zugriff auf das Budget $id haben
         $existingLeiter = Budget_Relations::orderBy('id')
             ->where('bid', $request->input('budgetID'))
             ->pluck('user_id')
             ->toArray();
         
+        //Fügt einen neuen Leiter zum Budget $id hinzu
         $newLeiter = new Budget_Relations;
         $newLeiter->bid = $request->input('budgetID');
         $newLeiter->user_id = $request->input('leiterSelect');
@@ -99,11 +118,16 @@ class BudgetController extends Controller
         $newLeiter->budget_name = $budgetName[0];
 
         if(!in_array($request->input('leiterSelect'), $existingLeiter)){
+            //wenn der Leiter nicht schon Zugriff auf das Budget hat, wird der neue Leiter auch gespeichert
             $newLeiter->save();
 
+            //schickt den Benutzer zurück zu der Seite des Budgets mit einer Erfolgsnachricht 
             return redirect('budgets/'.$request->input('budgetID'))
                 ->with('success', 'Leiter "'.$newLeiter->user->name.'" erfolgreich hinzugefügt.');
         } else{
+            //wenn der neue Leiter schon zugriff auf das Budget hat, wird nicht gespeichert und ein Error zurückgegeben
+            
+            //schickt den Benutzer zurück zu der Seite des Budgets mit einer Fehlersnachricht
             return redirect('budgets/'.$request->input('budgetID'))
                 ->with('error', 'Leiter "'.$newLeiter->user->name.'" wurde bereits hinzugefügt.');
         }
@@ -113,27 +137,30 @@ class BudgetController extends Controller
     }
 
     /**
-     * Creates a new budget in budget_list and budget_relations
+     * Fügt eine neues Budget den Tabellen
+     * budget_list und budget_relations hizu
      * 
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function createBudget(Request $request){
 
-        //Tests if the required fields are filled
+        //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'budgetName' => 'required|string|max:255',
+                'budgetName' => 'required|string|max:255', 
             ],
             [
-                'budgetName.required' => "der Budgetname muss ausgefüllt sein",
+                'budgetName.required' => "der Budgetname muss ausgefüllt sein", 
             ]
             );
 
+        //Kreiert einen neuen Eintrag in budget_list und speichert ihn
         $budget_list = new Budget_list;
         $budget_list->budget_name = $request->input('budgetName');
         $budget_list->save();
 
+        //Kreiert einen neuen Eintrag in budget_relations und speichert ihn
         $budget_relation = new Budget_Relations;
         $budget_relation->bid = $budget_list->id;
         $budget_relation->user_id = auth()->user()->id;
@@ -141,56 +168,59 @@ class BudgetController extends Controller
         $budget_relation->budget_name = $budget_list->budget_name;
         $budget_relation->save();
 
-
+        //schickt den Benutzer zum 'budgets'-Index zurück und schickt eine Erfolgsnachricht mit 
         return redirect('budgets')->with('success', 'Budget "'.$budget_list->budget_name.'" erfolgreich erstellt');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * speichert neue Ausgaben zum Budget $id und Budgetposten $bid hinzu
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //Tests if the required fields are filled
+        //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'budgetPosten' => 'required|string|max:255',
-                'content' => 'required|integer',
-                'bid' => 'required|integer'
+                'budgetPosten' => 'required|string|max:255', //ist erfordert, muss ein text sein und max 255 Zeichen sein
+                'content' => 'required|integer', //ist erfordert und muss eine Nummer sein
             ],
             [
                 'budgetPosten.required' => "Budgetposten muss ausgewählt sein",
                 'content.required' => "Ausgaben müssen ausgefüllt sein"
             ]
             );
-
+        
+        //kreiert einen neuen eintrag in budget_contents und speichert ihn
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
         $budget->bid = $request->input('bid');
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->content = $request->input('content');
+        //falls etwas in das 'notes' feld eingetragen wird, so wird es in die Tabelle eingefügt
+        //(so gelöst, damit nicht 'NULL' eingefügt wird)
         if($request->input('notes')){
             $budget->notes = $request->input('notes');
         }
         $budget->budgeted = 0;
         $budget->save();
 
+        //schickt den Benutzer zur Budgetseite zurück und schickt eine Erfolgsnachricht mit 
         return redirect('budgets/'.$budget->bid)->with('success', 'Budgetposten "'.$budget->budgetPosten.'" erfolgreich hinzugefügt');
         
         
     }
 
     /**
-     * Adds new "Budgetposten" to an existing budget
+     * Fügt neue Budgetposten zum Budget $id hinzu
      * 
      * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function addBudgetPosten(Request $request){
 
-        //Tests if the required fields are filled
+        //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
                 'budgetPosten' => 'required|string|max:255',
@@ -203,6 +233,7 @@ class BudgetController extends Controller
             ]
             );
 
+        //Kreiert einen neuen Eintrag in budget_contents mit dem neuen Budgetposten mit einigen Standartwerten und speicher ihn
         $budget = new Budget_Contents;
         $budget->user_id = auth()->user()->id;
         $budget->budgeted = $request->input('budgetiert');
@@ -212,53 +243,64 @@ class BudgetController extends Controller
         $budget->notes = 'Budgetposten erstellt';
         $budget->save();
 
+        //schickt den Benutzer zur Budgetseite zurück und schickt eine Erfolgsnachricht mit 
         return redirect('budgets/'.$budget->bid)->with('success', 'Budgetposten "'.$budget->budgetPosten.'" erfolgreich hinzugefügt');
     }
 
     public function deleteBudgetPosten($id, $budgetPosten){
+
+        //Filtert den alle Einträge zu demBudgetposten heraus, den der Benutzer löschen will
         $toDelete = Budget_Contents::where('bid', $id)
             ->where('budgetPosten', $budgetPosten)
             ->get();
         
+        //Iteriert durch alle Einträge durch und löscht jeden einzeln
         foreach($toDelete as $deleteItem){
             $deleteItem->delete();
         }
 
+        //schickt den Benutzer zur Budgetseite zurück und schickt eine Erfolgsnachricht mit 
         return redirect('budgets/'.$id)->with('success', 'Budgetposten "'.$budgetPosten.'" erfolgreich gelöscht');
     }
 
     /**
-     * Display the specified resource.
+     * Zeigt das ausgewählte Budget $id an
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
+        //Filtert den Budgetnamen aus budget_list
         $budgetName = Budget_List::where('id', $id)
             ->select('budget_name')
             ->first();
 
+        //Filtert alle Daten zum Budget aus budget_contents ohne sie zu gruppieren o.ä.
         $budgetData = Budget_Contents::orderBy('id')
             ->where('bid', $id)
             ->get();
 
+        //Eine Liste aller Budgetposten für ein Formular auf der Budgetseite
         $budgetPostenList = Budget_Contents::orderBy('id')
             ->where('bid', $id)
             ->groupBy('budgetPosten')
             ->pluck('budgetPosten');
 
+        //Filtert die Summe der Ausgaben der Budgetposten und gruppiert die Daten zu den Budgetposten
         $budget = DB::table('budget_contents')
             ->select(DB::raw('SUM(content) as content_sum, budgetPosten'))
             ->where('bid', $id)
             ->groupBy('budgetPosten')
             ->get();
 
+        //Eine Liste mit aller Benutzern, die Zugriff auf das Budget haben, um unbefugten Zutritt zu vermeiden
         $allowedUsers = Budget_Relations::orderBy('id')
             ->where('bid', $id)
             ->pluck('user_id')
             ->toArray();
         
+        //schickt den Benutzer zur Budgetseite mit den folgenden Variablen
         return view('budgets.b_show')
             ->with('budget', $budget)
             ->with('budgetData', $budgetData)
@@ -270,6 +312,8 @@ class BudgetController extends Controller
 
     /**
      * Show the form for editing the specified resource.
+     * 
+     * ----- nicht gebraucht
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -281,6 +325,8 @@ class BudgetController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * 
+     *  ----- nicht gebraucht
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -293,6 +339,8 @@ class BudgetController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * 
+     *  ----- nicht gebraucht
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

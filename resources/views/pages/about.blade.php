@@ -1,7 +1,5 @@
 @extends('layouts.app') 
 
-<!-- the content that will be shown on the about page-->
-
 @section('content')
     <h1>Über mich</h1>
     <p>

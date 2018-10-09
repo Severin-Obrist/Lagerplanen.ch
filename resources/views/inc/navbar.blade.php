@@ -2,7 +2,7 @@
       <nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-laravel">
 
           <div class="container">
-            <!-- redirects guests and registered users to different places -->
+            <!-- Schickt Benutzer an verschiedene Orte, je nachdem ob man angemeldet ist oder nicht -->
             @guest
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -27,14 +27,6 @@
                     <li class="nav-item">
                       <a class="nav-link" href="/about">Über uns</a>
                     </li>
-                    <!--
-                    <li class="nav-item">
-                      <a class="nav-link" href="/services">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/posts">Blog</a>
-                    </li>
-                    -->
                     <li class="nav-item">
                         <a class="nav-link" href="/budgets">Budget</a>
                     </li>

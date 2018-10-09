@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+<!-- Wird nicht gebraucht -->
+
 <!-- Form to edit a post -->
 
 @section('content')

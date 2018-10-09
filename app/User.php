@@ -10,7 +10,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Diese Attribute sind bearbeitbar
      *
      * @var array
      */
@@ -19,7 +19,9 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
+     * Diese Attribute sind versteckt, werden
+     * also nicht in Arrays gesteckt, wenn Daten 
+     * herausgefiltert werden
      *
      * @var array
      */
@@ -27,8 +29,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    //creates a model relationship with the other models
-    public function posts(){
+    //Erzeugt eine Beziehung zwischen den Models
+
+    public function posts(){ //Nicht mehr gebraucht
         return $this->hasMany('App\Post');
     }
 

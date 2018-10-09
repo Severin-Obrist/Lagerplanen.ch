@@ -1,5 +1,7 @@
 @extends('layouts.app') 
 
+<!-- wird nicht gebraucht -->
+
 @section('content')
     <h1>{{$title}}</h1>
     @if(count($services)>0)

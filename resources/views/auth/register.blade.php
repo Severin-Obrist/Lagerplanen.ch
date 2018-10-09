@@ -7,10 +7,13 @@
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
+                <!-- Der Hauptteil des Fensters -->
                 <div class="card-body">
+                    <!-- Öffnet das Formular -->
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
 
+                        <!-- Alle Felder des Formulars-->
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -82,7 +85,9 @@
                             </div>
                         </div>
                     </form>
+                    <!-- Formular wird geschlossen -->
                 </div>
+                <!-- Hauptteil des Fensters geschlossen -->
             </div>
         </div>
     </div>

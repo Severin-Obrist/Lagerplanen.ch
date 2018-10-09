@@ -18,9 +18,10 @@
 
                     Du bist angemeldet!
                     
-                    <!-- Shows all your own budgets-->
+                    <!-- Zeigt alle Budgets and, auf die der Benutzer Zugriff hat -->
                     @if(count($budgets) > 0)
                         <table class="table table-striped mt-2">
+                            <!-- Iteriert durch das $budget Array und erzeugt eine neue Tabellenreihe für jeden Eintrag -->
                             @foreach($budgets as $budget)
                                 <tr>
                                     <td>

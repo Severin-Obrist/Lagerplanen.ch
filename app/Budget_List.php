@@ -13,6 +13,8 @@ class Budget_List extends Model
     //Disable Timestamp
     public $timestamps = false;
 
+    //Erzeugt eine Beziehung zwischen den Models
+    
     public function budget_relations(){
         return $this->hasMany('App\Budget_Relations');
     }

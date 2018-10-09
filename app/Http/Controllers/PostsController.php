@@ -5,10 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Post;
-//use DB; => for normal SQL use
 
 class PostsController extends Controller
 {
+
+    /**
+     * ##################################################
+     * Ganzer Controller wird nicht mehr gebraucht,
+     * ist ein Überbleibsel aus einem Tutorial,
+     * wurde der Vollständigkeit halber nicht entfernt.
+     * ##################################################
+     */
+
+
     /**
      * Create a new controller instance.
      *

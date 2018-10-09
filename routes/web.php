@@ -11,33 +11,28 @@
 |
 */
 
-/*
-Route::get('/hello', function () {
-    return "<h1>Hello World</h1>";
-});
+/**
+ * Routes Sagen der Webseite, wo welcher URL hinführen soll
+ */
 
-Route::get('/users/{id}/{name}', function($id, $name){
-    return 'This is user '.$name.' with an id of '.$id;
-});
-*/
-
-//Route different parts of the link to different views/pages
-
+//Routes für GET-requests
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
-Route::get('/deleteBudgetPosten/{id}/{budgetPosten}', 'BudgetController@deleteBudgetPosten');
+Route::get('/deleteBudgetPosten/{id}/{budgetPosten}', 'BudgetController@deleteBudgetPosten'); //Diese Route hat nich die $id Variableim URL
+Route::get('/home', 'HomeController@index')->name('home'); //Gibt der Route einen Namen
 
+//Routes für POST-requests
 Route::post('addBudgetPosten', 'BudgetController@addBudgetPosten');
 Route::post('createBudget', 'BudgetController@createBudget');
 Route::post('leiterSearch', 'BudgetController@leiterSearch');
 Route::post('addLeiter', 'BudgetController@addLeiter');
 
+//::resource macht, dass die vordefinierten Funktionen von Ressourcen automatisch richtig geroutet werden
 Route::resource('posts', 'PostsController');
 Route::resource('budgets', 'BudgetController');
 
-
+//Fügt die Routes für die Authorisation hinzu
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');

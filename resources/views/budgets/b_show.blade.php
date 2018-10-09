@@ -3,12 +3,16 @@
 @section('content')
     <?php $budgetiert = 0;?>
 
-    @if(!Auth::guest())
-        @if(in_array(Auth::user()->id, $allowed)) <!-- lasst nur angemeldete user zu, welche zugriff auf das budget haben sollen -->  
+    <!-- überprüft, ob der Benutzer angemeldet ist, geht weiter wenn ja-->
+    @if(!Auth::guest()) 
+        <!-- lasst nur angemeldete user zu, welche zugriff auf das budget haben sollen --> 
+        @if(in_array(Auth::user()->id, $allowed))  
 
             <h1>{{ $budgetName->budget_name }}</h1>
             <hr>
             <div class="form-group">
+
+            <!-- Öffnet ein Formular mit der Funktion leiterSearch() las Ziel -->
             {!! Form::open(['action' => ['BudgetController@leiterSearch'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
                 <div>
                     {{ Form::label('pfadiname', 'Leiter hinzufügen') }}
@@ -21,10 +25,13 @@
                     </div>
                 </div>
             {!! Form::close() !!}
+            <!-- Schliesst das Formular -->
             </div>
             
+            <!-- Öffnet ein Formular mit der Funktion addBudgetPoster() als Ziel-->
             {!! Form::open(['action' => ['BudgetController@addBudgetPosten'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
             
+            <!-- Überprüft, ob Einträge im $budget Array vorhanden sind-->
             @if(count($budget) > 0)
                 <table class='table table-striped mt-2'>
                     <tr>
@@ -33,14 +40,16 @@
                         <th>Budgetiert</th>
                         <th>Noch verfügbar</th> 
                         <th>Infos</th>
-                        <!-- <th>BenutzerID</th> -->
                     </tr>
-                    @foreach($budget as $key => $eintrag) <!-- iteriert durch die verschiedenen budgetposten in einem budget -->
+                    <!-- iteriert durch die verschiedenen budgetposten in $budget und erzeugt neue Tabellenreihen it den dazugehörigen Daten -->
+                    @foreach($budget as $key => $eintrag) 
                         <tr>
                             <td>{{ $eintrag->budgetPosten }}</td>
                             <td>{{ $eintrag->content_sum }} Fr.</td>
                             <td>
+                                <!-- Iteriert durch $budgetData-->
                                 @foreach($budgetData as $eintragData)
+                                    <!-- Falls ein Eintrag von BudgetData == Eintrag von $budget, zeigt es die 'budgeted' Spalte an-->
                                     @if($eintragData->budgetPosten == $eintrag->budgetPosten)  
                                         {{ $eintragData->budgeted }} Fr.
                                         <?php $budgetiert = $eintragData->budgeted; ?>
@@ -48,11 +57,13 @@
                                     @endif
                                 @endforeach
                             </td>
+
                             <td> <?php echo $budgetiert-$eintrag->content_sum; ?> Fr.</td>
 
                             <td>
                             <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#budgetModal{{ $eintrag->budgetPosten }}">Mehr</button>
             
+                            <!-- Das 'Modal' mit den zusätzlichen Informationen, wird erst angezeigt, wenn auf den obigen Knopf gedrückt wird -->
                             <div class="modal fade show" id="budgetModal{{ $eintrag->budgetPosten }}" role="dialog">
                                 <div class="modal-dialog">
                                 
@@ -69,6 +80,8 @@
                                                     <th>Ausgaben</th>
                                                     <th>Notizen</th>
                                                 </tr>
+
+                                                <!-- Iteriert durch $budgetData, erstellt Tabellenreihen mit den zusätzlichen Infos für jeden Eintrag -->
                                                 @foreach($budgetData as $eintragData)
                                                     <tr>
                                                         @if($eintragData->budgetPosten == $eintrag->budgetPosten)  <!--überprüft, ob der BudgetPosten des eintragData derselbe ist wie der des zurzeitigen eintrages -->
@@ -94,7 +107,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Modal geschlossen -->
 
+                            <!-- Modal zum Bestätigen, dass man den Budgetposten Schliessen Will-->
                             <div class="modal fade show" id="deleteModal{{ $eintrag->budgetPosten }}" role="dialog">
                                 <div class="modal-dialog">
                                     
@@ -116,21 +131,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <!-- Modal geschlossen -->
 
                             </td>
 
-                            <!--
-                            <td>
-                                @foreach($budgetData as $eintragData)
-                                    @if($eintragData->budgetPosten == $eintrag->budgetPosten)  überprüft, ob der BudgetPosten des eintragData derselbe ist wie der des zurzeitigen eintrages 
-                                        {{ $eintragData->user->name }} </br>  wenn ja, dann gibt es die Benutzer ID von EintragData aus 
-                                    @endif
-                                @endforeach
-                            </td>
-                            -->
                         </tr>
                     @endforeach
 
+                    <!-- Formular zum erzeugen von Budgetposten, wenn Einträge in $budget vorhanden sind -->
                     <tr>
                         <td colspan="3"> 
                             <div class="form-group">
@@ -146,6 +154,7 @@
                         <td >
                             <div class="form-group">
                                 {{ Form::hidden('bid', $budgetID) }}
+                                {{ Form::label('submit', 'Hinzufügen') }} </br>
                                 {{ Form::submit('Bestätigen', ['class' => 'btn btn-primary']) }}
                             </div>
                         </td>
@@ -158,6 +167,7 @@
                         <th colspan="5" >Keine Einträge im Budget </th>
                     </tr>
 
+                        <!-- Formular zum erzeugen von Budgetposten, wenn keine Einträge in $budget vorhanden sind -->
                         <tr>
                             <td colspan="3"> 
                                 <div class="form-group">
@@ -173,7 +183,7 @@
                             <td >
                                 <div class="form-group">
                                     {{ Form::hidden('bid', $budgetID) }}
-                                    {{ Form::label('submit', 'Hinzufügen') }}</br>
+                                    {{ Form::label('submit', 'Hinzufügen') }} </br>
                                     {{ Form::submit('Bestätigen', ['class' => 'btn btn-primary']) }}
                                 </div>
                             </td>
@@ -181,14 +191,17 @@
                 </table>
             @endif
             {!! Form::close() !!}
+            <!-- Schliesst das Formular -->            
             
             <div>        
+                <!-- Öffnet ein Formular mit der Funktion store() als Ziel-->
                 {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
 
                     <div class="form-group">
                         {{ Form::label('budgetPosten', 'Budgetposten') }}
 
                         <select class="form-control" name="budgetPosten" multiple> <!-- normale HTML-syntax verwendet, damit ich die werte der einzelnen Optionen festelegen kann -->
+                            <!-- Iteriert durch $budgetPostenList um die Auswahlmöglichkeiten im Formular festzulegen-->
                             @foreach($budgetPostenList as $key => $bPLEintrag)
                                 <option value="{{ $bPLEintrag }}">{{ $bPLEintrag }} </option>
                             @endforeach
@@ -211,6 +224,7 @@
                     {{ Form::submit('Ausgabe hinzufügen', ['class' => 'btn btn-primary']) }}
                     
                 {!! Form::close() !!}
+                <!-- Schliesst das Formular -->
             </div>
 
         @else
