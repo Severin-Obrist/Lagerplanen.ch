@@ -31,12 +31,18 @@ class BudgetController extends Controller
     public function index()
     {
         //liste aller Budgets, auf die man Zugriff hat
-        $budgets = Budget_Relations::orderBy('id')
+        $budgets = Budget_Relations::orderBy('id, desc')
             ->where('user_id', auth()->user()->id)
             ->paginate(10);
 
+        $budgetsCreator = Budget_Relations::orderBy('id')
+            ->where('isCreator', 1)
+            ->get();
+
         //zeigt die view b_index an mit der Variable $budgets
-        return view('budgets.b_index')->with('budgets', $budgets);
+        return view('budgets.b_index')
+            ->with('budgets', $budgets)
+            ->with('budgetsCreator', $budgetsCreator);
     }
 
     /**
@@ -164,7 +170,7 @@ class BudgetController extends Controller
         $budget_relation = new Budget_Relations;
         $budget_relation->bid = $budget_list->id;
         $budget_relation->user_id = auth()->user()->id;
-        $budget_relation->isCreator = 0;
+        $budget_relation->isCreator = 1;
         $budget_relation->budget_name = $budget_list->budget_name;
         $budget_relation->save();
 

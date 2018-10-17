@@ -142,7 +142,7 @@
                     <tr>
                         <td colspan="3"> 
                             <div class="form-group">
-                                {{ Form::label('budgetPosten', 'Budegtposten') }}
+                                {{ Form::label('budgetPosten', 'Budegetposten') }}
                                 {{ Form::text('budgetPosten', '', ['class' => 'form-control', 'placeholder' => 'neuer Budgetposten']) }} 
                             </div>
                         </td>

@@ -8,7 +8,20 @@
         <!-- Iteriert durch das $budgets Array und erstellt einen Link zum passenden Budget für jeden Eintrag-->
         @foreach($budgets as $budget)
             <div>
-                <h3><a href="/budgets/{{$budget->bid}}">{{$budget->budget_name}}</a></h3>
+                <a href="/budgets/{{$budget->bid}}">
+                    <h3 class="d-inline">
+                            {{$budget->budget_name}}
+                    </h3>
+                    @foreach ($budgetsCreator as $key => $creator)
+                        @if ($creator->bid == $budget->bid)
+                            @if($creator->user->pfadiname  != 'kein pfadiname')
+                                <small> - von {{ $creator->user->pfadiname }}</small>
+                            @else
+                                <small> - von {{ $creator->user->name }}</small>
+                            @endif
+                        @endif
+                    @endforeach
+                </a>
             </div>
         @endforeach
     @endif
