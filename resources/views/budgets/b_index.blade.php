@@ -34,7 +34,7 @@
                     {{ Form::text('budgetName', '', ['class' => 'form-control', 'placeholder' => 'Neues Budget']) }}
                 </th>
                 <th>
-                    {{ Form::submit('Submit', ['class' => 'btn btn-primary']) }}
+                    {{ Form::submit('Budget erstellen', ['class' => 'btn btn-primary']) }}
                 </th>
             </table>
         </div>

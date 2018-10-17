@@ -31,7 +31,7 @@ class BudgetController extends Controller
     public function index()
     {
         //liste aller Budgets, auf die man Zugriff hat
-        $budgets = Budget_Relations::orderBy('id, desc')
+        $budgets = Budget_Relations::orderBy('id')
             ->where('user_id', auth()->user()->id)
             ->paginate(10);
 
