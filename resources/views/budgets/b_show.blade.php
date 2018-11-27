@@ -44,33 +44,35 @@
                     <!-- iteriert durch die verschiedenen budgetposten in $budget und erzeugt neue Tabellenreihen it den dazugehörigen Daten -->
                     @foreach($budget as $key => $eintrag) 
                         <tr>
-                            <td>{{ $eintrag->budgetPosten }}</td>
-                            <td>{{ $eintrag->content_sum }} Fr.</td>
+                            <td>{{ $eintrag->budgetPosten }}</td> <!-- Budgetposten -->
+                            <td>{{ $eintrag->content_sum }} Fr.</td> <!-- Ausgaben -->
                             <td>
                                 <!-- Iteriert durch $budgetData-->
                                 @foreach($budgetData as $eintragData)
                                     <!-- Falls ein Eintrag von BudgetData == Eintrag von $budget, zeigt es die 'budgeted' Spalte an-->
-                                    @if($eintragData->budgetPosten == $eintrag->budgetPosten)  
-                                        {{ $eintragData->budgeted }} Fr.
-                                        <?php $budgetiert = $eintragData->budgeted; ?>
-                                        @break
+                                    @if($eintragData->budgetPosten == $eintrag->budgetPosten)
+                                        @if($eintragData->budgeted != 0)  
+                                            {{ $eintragData->budgeted }} Fr. <!-- Budgetiert -->
+                                            <?php $budgetiert = $eintragData->budgeted; ?>
+                                            @break
+                                        @endif
                                     @endif
                                 @endforeach
                             </td>
 
-                            <td> <?php echo $budgetiert-$eintrag->content_sum; ?> Fr.</td>
+                            <td> <?php echo $budgetiert-$eintrag->content_sum; ?> Fr.</td> <!-- Noch verfügbar -->
 
-                            <td>
-                            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#budgetModal{{ $eintrag->budgetPosten }}">Mehr</button>
+                            <td> <!-- Mehr -->
+                            <button class="btn btn-outline-primary" type="button" data-toggle="modal" data-target="#budgetModal{{ $key }}">Mehr</button>
             
                             <!-- Das 'Modal' mit den zusätzlichen Informationen, wird erst angezeigt, wenn auf den obigen Knopf gedrückt wird -->
-                            <div class="modal fade show" id="budgetModal{{ $eintrag->budgetPosten }}" role="dialog">
+                            <div class="modal fade show" id="budgetModal{{ $key }}" role="dialog">
                                 <div class="modal-dialog">
                                 
                                     
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            Infos
+                                            {{ $eintrag->budgetPosten }}
                                         </div>
 
                                         <div class="modal-body">
@@ -149,7 +151,7 @@
                         <td> 
                             <div class="form-group">
                                 {{ Form::label('budgetiert', 'Budgetiert') }}
-                                {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert'])}} </td>
+                                {{ Form::number('budgetiert', "", ['class' => 'form-control', 'placeholder' => 'budgetiert', 'step' => '0.01'])}} </td>
                             </div>
                         <td >
                             <div class="form-group">
@@ -211,7 +213,7 @@
 
                     <div class="form-group">
                         {{ Form::label('content', 'Ausgaben') }}
-                        {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.']) }}
+                        {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.', 'step' => '0.01']) }}
                     </div>
                             
                     <div class="form-group">

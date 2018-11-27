@@ -25,7 +25,7 @@
 
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                      <a class="nav-link" href="/about">Über uns</a>
+                      <a class="nav-link" href="/about">Über mich</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/budgets">Budget</a>
@@ -45,11 +45,11 @@
                               </a>
 
                               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                  <a class="dropdown-item" href="/home">Dashboard</a>
+                                  <a class="dropdown-item" href="/home">Home</a>
                                   <a class="dropdown-item" href="{{ route('logout') }}"
                                      onclick="event.preventDefault();
                                                    document.getElementById('logout-form').submit();">
-                                      {{ __('Logout') }}
+                                      Abmelden
                                   </a>
 
                                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

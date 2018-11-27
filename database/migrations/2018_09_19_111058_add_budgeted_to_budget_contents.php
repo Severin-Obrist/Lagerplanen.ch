@@ -14,7 +14,7 @@ class AddBudgetedToBudgetContents extends Migration
     public function up()
     {
         Schema::table('budget_contents', function($table){
-            $table->integer('budgeted')->default('0');
+            $table->float('budgeted', 8, 2)->default(sprintf('%.2f', 0));
         });
     }
 

@@ -68,7 +68,11 @@ class BudgetController extends Controller
         //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'pfadiname' => 'required|string|max:255',
+                'pfadiname' => [
+                    'required', 
+                    'string', 
+                    'max:255',
+                ],
             ],
             [
                 'budgetName.required' => "der Pfadiname muss ausgefüllt sein",
@@ -154,7 +158,11 @@ class BudgetController extends Controller
         //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'budgetName' => 'required|string|max:255', 
+                'budgetName' => [
+                    'required', 
+                    'string', 
+                    'max:255',
+                ], 
             ],
             [
                 'budgetName.required' => "der Budgetname muss ausgefüllt sein", 
@@ -189,12 +197,20 @@ class BudgetController extends Controller
         //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'budgetPosten' => 'required|string|max:255', //ist erfordert, muss ein text sein und max 255 Zeichen sein
-                'content' => 'required|integer', //ist erfordert und muss eine Nummer sein
+                'budgetPosten' => [                 //ist erfordert, muss ein text sein und max 255 Zeichen sein
+                    'required',
+                    'string',
+                    'max:255'
+                ], 
+                'content' => [                      //ist erfordert und muss eine Nummer sein
+                    'required', 
+                    'numeric',
+                ], 
             ],
             [
-                'budgetPosten.required' => "Budgetposten muss ausgewählt sein",
-                'content.required' => "Ausgaben müssen ausgefüllt sein"
+                'budgetPosten.required' => "Budgetposten muss ausgewählt sein.",
+                'content.required' => "Ausgaben müssen ausgefüllt sein.",
+                'content.numeric' => "Gib eine Gültige Zahl ein.",
             ]
             );
         
@@ -229,9 +245,19 @@ class BudgetController extends Controller
         //bestimmt, ob die benötigten Felder ausgefüllt sind
         $this->validate($request, 
             [
-                'budgetPosten' => 'required|string|max:255',
-                'budgetiert' => 'required|integer',
-                'bid' => 'required|integer'
+                'budgetPosten' => [
+                    'required',
+                    'string',
+                    'max:255',
+                ],
+                'budgetiert' => [
+                    'required',
+                    'numeric',
+                ],
+                'bid' => [
+                    'required', 
+                    'integer',
+                ],
             ],
             [
                 'budgetiert.required' => "Das Feld 'Budgetiert' muss ausgefüllt sein",
