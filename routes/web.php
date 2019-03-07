@@ -20,7 +20,8 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/services', 'PagesController@services');
 Route::get('/lager', 'PagesController@lager');
-Route::get('/deleteBudgetPosten/{id}/{budgetPosten}', 'BudgetController@deleteBudgetPosten'); //Diese Route hat nich die $id Variableim URL
+Route::get('/deleteBudgetPosten/{id}/{budgetPosten}', 'BudgetController@deleteBudgetPosten'); //Diese Route hat nich die $id Variable im URL
+Route::get('/viewQuittung/{quittung_path}', 'BudgetController@viewQuittung');
 Route::get('/home', 'HomeController@index')->name('home'); //Gibt der Route einen Namen
 
 //Routes für POST-requests

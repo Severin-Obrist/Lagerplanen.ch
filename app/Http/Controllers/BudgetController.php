@@ -45,6 +45,11 @@ class BudgetController extends Controller
             ->with('budgetsCreator', $budgetsCreator);
     }
 
+    public function viewQuittung($quittung_path){
+        return view('budgets.b_quittung')
+            ->with('quittung_path', $quittung_path);
+    }
+
     /**
      * Show the form for creating a new resource.
      * 
@@ -206,13 +211,35 @@ class BudgetController extends Controller
                     'required', 
                     'numeric',
                 ], 
+                'quittung_image' => [
+                    'image',
+                    'nullable',
+                ]
             ],
             [
                 'budgetPosten.required' => "Budgetposten muss ausgewählt sein.",
                 'content.required' => "Ausgaben müssen ausgefüllt sein.",
                 'content.numeric' => "Gib eine Gültige Zahl ein.",
+                'quittung_image.image' => "Muss ein Bild sein."
             ]
             );
+
+        //Handle File upload
+        if($request->hasFile('quittung_image')){
+            //get Filename with the extension
+            $filenameWithExt = $request->file('quittung_image')->getClientOriginalName();
+            //get just filename
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //get just extension
+            $extension = $request->file('quittung_image')->getClientOriginalExtension();
+            //Filename to store => filename_(time).jpg
+            $fileNameToStore = $filename.'_'.time().'.'.$extension;
+            //upload image
+            $path = $request->file('quittung_image')->storeAs('public/quittung_image', $fileNameToStore);
+        } else{
+            //Sets image to filler
+            $fileNameToStore = 'noimage.jpg';
+        }
         
         //kreiert einen neuen eintrag in budget_contents und speichert ihn
         $budget = new Budget_Contents;
@@ -220,6 +247,7 @@ class BudgetController extends Controller
         $budget->bid = $request->input('bid');
         $budget->budgetPosten = $request->input('budgetPosten');
         $budget->content = $request->input('content');
+        $budget->quittung_image = $fileNameToStore;
         //falls etwas in das 'notes' feld eingetragen wird, so wird es in die Tabelle eingefügt
         //(so gelöst, damit nicht 'NULL' eingefügt wird)
         if($request->input('notes')){

@@ -81,6 +81,7 @@
                                                     <th>Benutzer</th>
                                                     <th>Ausgaben</th>
                                                     <th>Notizen</th>
+                                                    <th>Quittung</th>
                                                 </tr>
 
                                                 <!-- Iteriert durch $budgetData, erstellt Tabellenreihen mit den zusätzlichen Infos für jeden Eintrag -->
@@ -96,6 +97,13 @@
                                                             </td>   
                                                             <td>{{ $eintragData->content }}</td> 
                                                             <td>{{ $eintragData->notes }}</td> 
+                                                            <td>
+                                                                @if ($eintragData->quittung_image == "noimage.jpg" || $eintragData->quittung_image == "")
+                                                                    Kein Foto
+                                                                @else
+                                                                    <a href="viewQuittung/{{ $eintragData->quittung_image }}">Foto</a>
+                                                                @endif
+                                                            </td>
                                                         @endif
                                                     </tr>
                                                 @endforeach
@@ -197,7 +205,7 @@
             
             <div>        
                 <!-- Öffnet ein Formular mit der Funktion store() als Ziel-->
-                {!! Form::open(['action' => 'BudgetController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
+                {!! Form::open(['action' => ['BudgetController@store'], 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
 
                     <div class="form-group">
                         {{ Form::label('budgetPosten', 'Budgetposten') }}
@@ -214,6 +222,10 @@
                     <div class="form-group">
                         {{ Form::label('content', 'Ausgaben') }}
                         {{ Form::number('content', "", ['class' => 'form-control', 'placeholder' => 'Fr.', 'step' => '0.01']) }}
+                    </div>
+                    <div class="form-group">
+                        <label for="quittung_image">Quittung</label> <br>
+                        <input type="file" name="quittung_image" accept=".jpg, .gif, .png">
                     </div>
                             
                     <div class="form-group">
